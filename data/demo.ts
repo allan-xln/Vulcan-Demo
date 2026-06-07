@@ -11,6 +11,7 @@ import {
   MessageCircle,
   Network,
   Play,
+  RadioTower,
   ShieldCheck,
   Zap
 } from "lucide-react";
@@ -30,55 +31,175 @@ export const tourSteps = [
   {
     id: "welcome",
     target: "command-button",
+    view: "dashboard",
+    openCommand: false,
+    placement: "right",
+    durationMs: 3600,
     title: "Bem-vindo ao Vulcan",
-    body: "Este botão abre a camada de comando. É por aqui que o usuário troca de tela sem uma navbar tradicional.",
+    body: "A demo agora roda sozinha. O autopiloto abre telas, rola a página e destaca os pontos importantes como se alguém estivesse conduzindo a apresentação.",
     icon: Command
   },
   {
-    id: "command-center",
-    target: "command-center",
-    title: "Topo operacional",
-    body: "O topo mostra tempo real, agentes online, isolamento da empresa, status da base e usuário da sessão demo.",
+    id: "command-menu",
+    target: "command-menu",
+    view: "dashboard",
+    openCommand: true,
+    placement: "left",
+    durationMs: 4200,
+    title: "Menu de comando automático",
+    body: "A camada de comando abre sem uma navbar tradicional. É aqui que o Vulcan troca entre visão executiva, hierarquia, métricas, IA, notificações e configurações.",
+    icon: Command
+  },
+  {
+    id: "dashboard-entry",
+    target: "command-dashboard",
+    view: "dashboard",
+    openCommand: true,
+    placement: "left",
+    durationMs: 3200,
+    title: "Primeira visão: Comando",
+    body: "O autopiloto seleciona a central principal, onde ficam pulso executivo, agentes, IA e saúde operacional.",
+    icon: Gauge
+  },
+  {
+    id: "real-time",
+    target: "tempo-real",
+    view: "dashboard",
+    openCommand: false,
+    placement: "right",
+    durationMs: 4400,
+    title: "Tempo real",
+    body: "A página rola até o pulso executivo para mostrar o que está acontecendo agora: sistemas ativos, horas analisadas e recomendações rápidas.",
+    icon: RadioTower
+  },
+  {
+    id: "main-metrics",
+    target: "metricas",
+    view: "dashboard",
+    openCommand: false,
+    placement: "right",
+    durationMs: 4200,
+    title: "Métricas principais",
+    body: "Os KPIs mostram usuários acompanhados, agentes online, eventos processados, horas analisadas, gargalos, automação e foco operacional.",
     icon: Gauge
   },
   {
     id: "agents",
     target: "agentes",
+    view: "dashboard",
+    openCommand: false,
+    placement: "left",
+    durationMs: 4200,
     title: "Agentes conectados",
     body: "Windows, Linux e macOS enviam sinais operacionais permitidos por política, sem capturar senhas ou conteúdo privado.",
     icon: Laptop
   },
   {
-    id: "metrics",
-    target: "metricas",
-    title: "Métricas principais",
-    body: "Tempo ativo, ociosidade, fragmentação e estabilidade aparecem em uma camada executiva simples de ler.",
-    icon: Gauge
-  },
-  {
     id: "bottlenecks",
     target: "gargalos",
+    view: "dashboard",
+    openCommand: false,
+    placement: "left",
+    durationMs: 4200,
     title: "Gargalos detectados",
     body: "O Vulcan aponta onde processos estão travando, como excesso de planilhas, alternância de sistemas ou agentes offline.",
     icon: Zap
   },
   {
-    id: "ai",
-    target: "insights",
-    title: "Insights de IA",
-    body: "A IA transforma métricas em recomendações práticas: priorizar automações, reorganizar filas e reduzir retrabalho.",
-    icon: Brain
+    id: "open-hierarchy",
+    target: "command-hierarchy",
+    view: "hierarchy",
+    openCommand: true,
+    placement: "left",
+    durationMs: 3600,
+    title: "Abrindo hierarquia",
+    body: "A demo volta ao menu de comando e seleciona a visão de hierarquia para mostrar permissões por árvore.",
+    icon: Network
   },
   {
     id: "hierarchy",
     target: "hierarquia",
+    view: "hierarchy",
+    openCommand: false,
+    placement: "right",
+    durationMs: 4400,
     title: "Hierarquia de permissões",
     body: "Supervisor vê sua equipe, gerente vê a árvore abaixo, diretor vê toda a operação e operador vê apenas seus próprios dados.",
     icon: Network
   },
   {
+    id: "open-metrics",
+    target: "command-metrics",
+    view: "metrics",
+    openCommand: true,
+    placement: "left",
+    durationMs: 3400,
+    title: "Abrindo métricas profundas",
+    body: "O menu troca para a tela de métricas, onde a leitura fica mais detalhada por tempo, aplicativo e fragmentação.",
+    icon: Activity
+  },
+  {
+    id: "deep-metrics",
+    target: "metricas",
+    view: "metrics",
+    openCommand: false,
+    placement: "right",
+    durationMs: 4400,
+    title: "Métricas profundas",
+    body: "Aqui aparecem tempo ativo, tempo ocioso, foco operacional, fragmentação e ranking de sistemas usados na rotina.",
+    icon: Gauge
+  },
+  {
+    id: "open-insights",
+    target: "command-insights",
+    view: "insights",
+    openCommand: true,
+    placement: "left",
+    durationMs: 3400,
+    title: "Abrindo IA e insights",
+    body: "O autopiloto seleciona insights para mostrar como a IA traduz métricas em recomendações executivas.",
+    icon: Brain
+  },
+  {
+    id: "ai",
+    target: "insights",
+    view: "insights",
+    openCommand: false,
+    placement: "right",
+    durationMs: 4400,
+    title: "Insights de IA",
+    body: "A IA transforma métricas em recomendações práticas: priorizar automações, reorganizar filas e reduzir retrabalho.",
+    icon: Brain
+  },
+  {
+    id: "automation",
+    target: "automacao",
+    view: "insights",
+    openCommand: false,
+    placement: "right",
+    durationMs: 4200,
+    title: "Oportunidades de automação",
+    body: "A plataforma estima horas economizadas e ajuda a priorizar o que automatizar primeiro.",
+    icon: Bot
+  },
+  {
+    id: "open-notifications",
+    target: "command-notifications",
+    view: "notifications",
+    openCommand: true,
+    placement: "left",
+    durationMs: 3400,
+    title: "Abrindo notificações",
+    body: "O Vulcan também mostra como alertas e relatórios chegam para responsáveis por WhatsApp, e-mail e agente local.",
+    icon: BellRing
+  },
+  {
     id: "whatsapp",
     target: "whatsapp",
+    view: "notifications",
+    openCommand: false,
+    placement: "right",
+    durationMs: 4200,
     title: "Notificações por WhatsApp",
     body: "Alertas e relatórios podem sair pelo Canal Oficial Vulcan para os responsáveis configurados pelo cliente.",
     icon: MessageCircle
@@ -86,29 +207,45 @@ export const tourSteps = [
   {
     id: "email",
     target: "email",
+    view: "notifications",
+    openCommand: false,
+    placement: "right",
+    durationMs: 3800,
     title: "Notificações por e-mail",
     body: "Relatórios diários, semanais e mensais podem ser enviados por SMTP, Gmail ou Outlook.",
     icon: BellRing
   },
   {
+    id: "open-settings",
+    target: "command-settings",
+    view: "settings",
+    openCommand: true,
+    placement: "left",
+    durationMs: 3400,
+    title: "Abrindo configurações",
+    body: "A demo entra nas configurações para explicar privacidade, integrações e preparação para operação real.",
+    icon: ShieldCheck
+  },
+  {
     id: "privacy",
     target: "privacidade",
+    view: "settings",
+    openCommand: false,
+    placement: "right",
+    durationMs: 4400,
     title: "Privacidade",
     body: "O Vulcan mede fluxo operacional. Não é spyware, não registra teclas, não coleta senhas e não lê conteúdo privado.",
     icon: ShieldCheck
   },
   {
-    id: "automation",
-    target: "automacao",
-    title: "Oportunidades de automação",
-    body: "A plataforma estima horas economizadas e ajuda a priorizar o que automatizar primeiro.",
-    icon: Bot
-  },
-  {
     id: "summary",
     target: "command-button",
+    view: "dashboard",
+    openCommand: false,
+    placement: "right",
+    durationMs: 5200,
     title: "Resumo final",
-    body: "Pronto. O cliente viu como navegar, onde ficam as métricas e como o Vulcan explica a operação inteira.",
+    body: "Pronto. A demo navegou sozinha por comando, métricas, hierarquia, IA, automação, notificações e privacidade. Agora o cliente já entende o valor do Vulcan.",
     icon: Lock
   }
 ];

@@ -2,13 +2,14 @@
 
 import Image from "next/image";
 import type { FormEvent, ReactNode } from "react";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Activity,
   ArrowLeft,
   ArrowRight,
   BellRing,
+  Bot,
   Brain,
   Command,
   DatabaseZap,
@@ -19,7 +20,10 @@ import {
   LogOut,
   Mail,
   MessageCircle,
+  MousePointer2,
   Network,
+  Pause,
+  Play,
   RadioTower,
   RefreshCcw,
   ShieldCheck,
@@ -30,6 +34,7 @@ import { agentGrid, hierarchy, insights, metrics, timeline, tourSteps } from "@/
 import { cn } from "@/lib/format";
 
 type ViewKey = "dashboard" | "hierarchy" | "metrics" | "insights" | "notifications" | "settings";
+type CursorPosition = { x: number; y: number; label: string; visible: boolean };
 
 const commands: { key: ViewKey; label: string; icon: typeof Gauge; summary: string }[] = [
   { key: "dashboard", label: "Comando", icon: Gauge, summary: "Pulso executivo, agentes, IA e saúde operacional." },
@@ -45,9 +50,11 @@ export default function Home() {
   const [activeView, setActiveView] = useState<ViewKey>("dashboard");
   const [commandOpen, setCommandOpen] = useState(false);
   const [tourActive, setTourActive] = useState(false);
+  const [autoPilot, setAutoPilot] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
+  const [cursorPosition, setCursorPosition] = useState<CursorPosition>({ x: 0, y: 0, label: "", visible: false });
 
-  const step = tourSteps[currentStep];
+  const step = tourSteps[currentStep] ?? tourSteps[0];
   const activeTarget = tourActive ? step.target : "";
   const currentCommand = commands.find((item) => item.key === activeView) ?? commands[0];
   const progress = Math.round(((currentStep + 1) / tourSteps.length) * 100);
@@ -56,16 +63,23 @@ export default function Home() {
     event.preventDefault();
     setLoggedIn(true);
     setTourActive(true);
+    setAutoPilot(true);
     setCurrentStep(0);
   }
 
-  function nextStep() {
+  const finishTour = useCallback(() => {
+    setTourActive(false);
+    setCommandOpen(false);
+    setCursorPosition((position) => ({ ...position, visible: false }));
+  }, []);
+
+  const nextStep = useCallback(() => {
     if (currentStep === tourSteps.length - 1) {
-      setTourActive(false);
+      finishTour();
       return;
     }
     setCurrentStep((value) => value + 1);
-  }
+  }, [currentStep, finishTour]);
 
   function previousStep() {
     setCurrentStep((value) => Math.max(0, value - 1));
@@ -74,10 +88,70 @@ export default function Home() {
   function restartTour() {
     setCurrentStep(0);
     setTourActive(true);
+    setAutoPilot(true);
   }
 
+  useEffect(() => {
+    const timers: number[] = [];
+    const schedule = (callback: () => void, delay: number) => {
+      const timer = window.setTimeout(callback, delay);
+      timers.push(timer);
+    };
+
+    if (!tourActive) {
+      schedule(() => setCursorPosition((position) => ({ ...position, visible: false })), 0);
+      return () => timers.forEach((timer) => window.clearTimeout(timer));
+    }
+
+    schedule(() => {
+      const nextView = step.view as ViewKey | undefined;
+      if (nextView) {
+        setActiveView(nextView);
+      }
+      setCommandOpen(Boolean(step.openCommand));
+    }, 0);
+
+    const moveCursorToTarget = () => {
+      const element = document.getElementById(step.target);
+      if (!element) {
+        setCursorPosition((position) => ({ ...position, visible: false }));
+        return;
+      }
+
+      const rect = element.getBoundingClientRect();
+      setCursorPosition({
+        x: Math.max(18, Math.min(window.innerWidth - 160, rect.left + rect.width / 2)),
+        y: Math.max(18, Math.min(window.innerHeight - 96, rect.top + rect.height / 2)),
+        label: step.title,
+        visible: true
+      });
+    };
+
+    schedule(() => {
+      if (step.openCommand) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        document.getElementById(step.target)?.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+      }
+      moveCursorToTarget();
+    }, step.openCommand ? 120 : 360);
+
+    [700, 1200, 1900].forEach((delay) => schedule(moveCursorToTarget, delay));
+
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
+  }, [step, tourActive]);
+
+  useEffect(() => {
+    if (!tourActive || !autoPilot) {
+      return;
+    }
+
+    const timer = window.setTimeout(nextStep, step.durationMs);
+    return () => window.clearTimeout(timer);
+  }, [autoPilot, nextStep, step.durationMs, tourActive]);
+
   return (
-    <main className="min-h-screen overflow-hidden bg-vulcan-ink text-zinc-100">
+    <main className="min-h-screen overflow-x-hidden bg-vulcan-ink text-zinc-100">
       <AnimatedAtmosphere />
       <AnimatePresence mode="wait">
         {!loggedIn ? (
@@ -89,7 +163,10 @@ export default function Home() {
                 activeView={activeView}
                 currentCommand={currentCommand}
                 onOpenCommand={() => setCommandOpen(true)}
-                onLogout={() => setLoggedIn(false)}
+                onLogout={() => {
+                  finishTour();
+                  setLoggedIn(false);
+                }}
                 activeTarget={activeTarget}
               />
 
@@ -106,6 +183,7 @@ export default function Home() {
             <CommandOverlay
               open={commandOpen}
               activeView={activeView}
+              activeTarget={activeTarget}
               setView={(view) => {
                 setActiveView(view);
                 setCommandOpen(false);
@@ -119,11 +197,14 @@ export default function Home() {
               currentStep={currentStep}
               totalSteps={tourSteps.length}
               progress={progress}
+              autoPilot={autoPilot}
               onNext={nextStep}
               onPrevious={previousStep}
               onRestart={restartTour}
-              onSkip={() => setTourActive(false)}
+              onSkip={finishTour}
+              onToggleAutoPilot={() => setAutoPilot((value) => !value)}
             />
+            <AutopilotCursor active={tourActive && autoPilot} position={cursorPosition} />
           </motion.section>
         )}
       </AnimatePresence>
@@ -349,7 +430,7 @@ function DashboardView({ activeTarget }: { activeTarget: string }) {
       <div className="mt-5 grid gap-5 xl:grid-cols-3">
         <AgentPanel active={activeTarget === "agentes"} />
         <InsightsView activeTarget={activeTarget} compact />
-        <NotificationsPanel active={activeTarget === "notificacoes" || activeTarget === "whatsapp" || activeTarget === "email"} compact />
+        <NotificationsPanel active={activeTarget === "notificacoes" || activeTarget === "whatsapp" || activeTarget === "email"} activeTarget={activeTarget} compact />
       </div>
     </ViewFrame>
   );
@@ -427,14 +508,48 @@ function InsightsView({ activeTarget, compact = false }: { activeTarget: string;
           ))}
         </div>
       </Panel>
+      {!compact && <AutomationPanel active={activeTarget === "automacao"} />}
     </ViewFrame>
+  );
+}
+
+function AutomationPanel({ active }: { active: boolean }) {
+  const opportunities = [
+    ["Faturamento repetitivo", "18h/mês", "Automatizar preenchimento e validação de campos recorrentes."],
+    ["Conciliação por planilha", "23h/mês", "Trocar conferência manual por regra de exceção no ERP."],
+    ["Triagem de mensagens", "14h/mês", "Criar fila única entre ERP, WhatsApp e e-mail operacional."],
+    ["Relatórios gerenciais", "19h/mês", "Gerar resumo diário e semanal por WhatsApp e e-mail."]
+  ];
+
+  return (
+    <div className="mt-5">
+      <Panel id="automacao" active={active} title="Oportunidades de automação" icon={Bot}>
+        <div className="grid gap-3 md:grid-cols-2">
+          {opportunities.map(([title, hours, action], index) => (
+            <motion.article
+              key={title}
+              className="border border-orange-400/15 bg-black/40 p-4"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: index * 0.06 }}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <p className="font-semibold text-zinc-100">{title}</p>
+                <span className="shrink-0 border border-orange-400/25 px-2 py-1 text-xs uppercase tracking-[0.14em] text-orange-300">{hours}</span>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-zinc-500">{action}</p>
+            </motion.article>
+          ))}
+        </div>
+      </Panel>
+    </div>
   );
 }
 
 function NotificationsView({ activeTarget, compact = false }: { activeTarget: string; compact?: boolean }) {
   return (
     <ViewFrame compact={compact}>
-      <NotificationsPanel active={activeTarget === "notificacoes" || activeTarget === "whatsapp" || activeTarget === "email"} compact={false} />
+      <NotificationsPanel active={activeTarget === "notificacoes" || activeTarget === "whatsapp" || activeTarget === "email"} activeTarget={activeTarget} compact={false} />
     </ViewFrame>
   );
 }
@@ -482,11 +597,11 @@ function AgentPanel({ active }: { active: boolean }) {
   );
 }
 
-function NotificationsPanel({ active, compact = true }: { active: boolean; compact?: boolean }) {
-  const channels: Array<{ label: string; description: string; icon: typeof BellRing }> = [
-    { label: "WhatsApp", description: "Alertas e relatórios pelo Canal Oficial Vulcan.", icon: MessageCircle },
-    { label: "E-mail", description: "Resumos executivos diários, semanais e mensais.", icon: Mail },
-    { label: "Windows/agente", description: "Avisos locais quando houver falha ou gargalo.", icon: BellRing }
+function NotificationsPanel({ active, activeTarget, compact = true }: { active: boolean; activeTarget: string; compact?: boolean }) {
+  const channels: Array<{ id: string; label: string; description: string; icon: typeof BellRing }> = [
+    { id: "whatsapp", label: "WhatsApp", description: "Alertas e relatórios pelo Canal Oficial Vulcan.", icon: MessageCircle },
+    { id: "email", label: "E-mail", description: "Resumos executivos diários, semanais e mensais.", icon: Mail },
+    { id: "agente-local", label: "Windows/agente", description: "Avisos locais quando houver falha ou gargalo.", icon: BellRing }
   ];
 
   return (
@@ -495,7 +610,7 @@ function NotificationsPanel({ active, compact = true }: { active: boolean; compa
         {channels.map((channel) => {
           const IconComponent = channel.icon;
           return (
-            <div key={channel.label} className="border border-zinc-800 bg-black/35 p-4">
+            <div key={channel.label} id={channel.id} className={cn("relative overflow-visible border border-zinc-800 bg-black/35 p-4", activeTarget === channel.id && "focus-ring")}>
               <IconComponent className="mb-3 h-5 w-5 text-orange-300" />
               <p className="font-semibold text-zinc-100">{channel.label}</p>
               <p className="mt-2 text-sm leading-6 text-zinc-500">{channel.description}</p>
@@ -510,11 +625,13 @@ function NotificationsPanel({ active, compact = true }: { active: boolean; compa
 function CommandOverlay({
   open,
   activeView,
+  activeTarget,
   setView,
   onClose
 }: {
   open: boolean;
   activeView: ViewKey;
+  activeTarget: string;
   setView: (view: ViewKey) => void;
   onClose: () => void;
 }) {
@@ -523,7 +640,8 @@ function CommandOverlay({
       {open ? (
         <motion.div className="fixed inset-0 z-50 bg-black/78 p-4 backdrop-blur-xl md:p-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
           <motion.div
-            className="mx-auto flex h-full max-w-6xl flex-col border border-orange-400/20 bg-zinc-950/88 p-4 shadow-[0_0_48px_rgba(249,115,22,0.10)] md:p-6"
+            id="command-menu"
+            className={cn("mx-auto flex h-full max-w-6xl flex-col border border-orange-400/20 bg-zinc-950/88 p-4 shadow-[0_0_48px_rgba(249,115,22,0.10)] md:p-6", activeTarget === "command-menu" && "focus-ring")}
             initial={{ scale: 0.96, y: 20, filter: "blur(10px)" }}
             animate={{ scale: 1, y: 0, filter: "blur(0px)" }}
             exit={{ scale: 0.98, y: 18, filter: "blur(8px)" }}
@@ -546,10 +664,15 @@ function CommandOverlay({
                 const active = activeView === command.key;
                 return (
                   <motion.button
+                    id={`command-${command.key}`}
                     key={command.key}
                     type="button"
                     onClick={() => setView(command.key)}
-                    className={cn("group relative min-h-40 overflow-hidden border p-5 text-left transition", active ? "border-orange-300 bg-orange-500 text-black" : "border-zinc-800 bg-black/48 text-zinc-100 hover:border-orange-400/60")}
+                    className={cn(
+                      "group relative min-h-40 overflow-hidden border p-5 text-left transition",
+                      active ? "border-orange-300 bg-orange-500 text-black" : "border-zinc-800 bg-black/48 text-zinc-100 hover:border-orange-400/60",
+                      activeTarget === `command-${command.key}` && "focus-ring"
+                    )}
                     initial={{ y: 28, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: index * 0.045 }}
@@ -576,32 +699,39 @@ function TourBubble({
   currentStep,
   totalSteps,
   progress,
+  autoPilot,
   onNext,
   onPrevious,
   onRestart,
-  onSkip
+  onSkip,
+  onToggleAutoPilot
 }: {
   active: boolean;
   step: (typeof tourSteps)[number];
   currentStep: number;
   totalSteps: number;
   progress: number;
+  autoPilot: boolean;
   onNext: () => void;
   onPrevious: () => void;
   onRestart: () => void;
   onSkip: () => void;
+  onToggleAutoPilot: () => void;
 }) {
   const Icon = step.icon;
+  const placementClass = step.placement === "left" ? "left-4 top-28" : "right-4 top-28";
+  const arrowClass = step.placement === "left" ? "left-16" : "right-16";
+
   return (
     <AnimatePresence>
       {active ? (
         <motion.aside
-          className="fixed right-4 top-28 z-40 w-[min(390px,calc(100vw-2rem))] border border-orange-400/35 bg-black/92 p-5 shadow-[0_0_34px_rgba(249,115,22,0.20)] backdrop-blur-xl"
+          className={cn("fixed z-40 w-[min(390px,calc(100vw-2rem))] border border-orange-400/35 bg-black/92 p-5 shadow-[0_0_34px_rgba(249,115,22,0.20)] backdrop-blur-xl", placementClass)}
           initial={{ opacity: 0, y: -18, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -14, scale: 0.98 }}
         >
-          <span className="absolute -top-2 right-16 h-4 w-4 rotate-45 border-l border-t border-orange-400/35 bg-black" />
+          <span className={cn("absolute -top-2 h-4 w-4 rotate-45 border-l border-t border-orange-400/35 bg-black", arrowClass)} />
           <div className="flex items-start gap-3">
             <div className="grid h-11 w-11 shrink-0 place-items-center bg-orange-500 text-black">
               <Icon className="h-5 w-5" />
@@ -612,10 +742,18 @@ function TourBubble({
             </div>
           </div>
           <p className="mt-4 text-sm leading-7 text-zinc-300">{step.body}</p>
+          <div className="mt-4 flex items-center gap-2 border border-emerald-400/20 bg-emerald-950/20 px-3 py-2 text-xs text-emerald-100">
+            <motion.span className="h-2 w-2 rounded-full bg-emerald-400" animate={{ opacity: [0.45, 1, 0.45], scale: [0.9, 1.14, 0.9] }} transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }} />
+            {autoPilot ? "Autopiloto guiando a demo agora" : "Autopiloto pausado para apresentação manual"}
+          </div>
           <div className="mt-4 h-2 bg-zinc-900">
             <motion.div className="h-full bg-gradient-to-r from-orange-700 via-orange-400 to-yellow-300" animate={{ width: `${progress}%` }} />
           </div>
           <div className="mt-5 flex flex-wrap gap-2">
+            <button type="button" onClick={onToggleAutoPilot} className="inline-flex h-10 items-center gap-2 border border-orange-400/35 px-3 text-sm text-orange-100 transition hover:bg-orange-500 hover:text-black">
+              {autoPilot ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+              {autoPilot ? "Pausar" : "Retomar"}
+            </button>
             <button type="button" onClick={onPrevious} disabled={currentStep === 0} className="inline-flex h-10 items-center gap-2 border border-zinc-800 px-3 text-sm text-zinc-200 transition hover:border-orange-400/50 disabled:opacity-35">
               <ArrowLeft className="h-4 w-4" />
               Voltar
@@ -632,6 +770,29 @@ function TourBubble({
             </button>
           </div>
         </motion.aside>
+      ) : null}
+    </AnimatePresence>
+  );
+}
+
+function AutopilotCursor({ active, position }: { active: boolean; position: CursorPosition }) {
+  return (
+    <AnimatePresence>
+      {active && position.visible ? (
+        <motion.div
+          className="pointer-events-none fixed left-0 top-0 z-[70] flex items-center gap-2"
+          initial={{ opacity: 0, scale: 0.86 }}
+          animate={{ opacity: 1, scale: 1, x: position.x, y: position.y }}
+          exit={{ opacity: 0, scale: 0.88 }}
+          transition={{ type: "spring", stiffness: 130, damping: 19, mass: 0.65 }}
+        >
+          <div className="grid h-10 w-10 place-items-center border border-orange-300/60 bg-orange-500 text-black shadow-[0_0_24px_rgba(249,115,22,0.26)]">
+            <MousePointer2 className="h-5 w-5" />
+          </div>
+          <div className="max-w-52 border border-orange-400/25 bg-black/88 px-3 py-2 text-xs uppercase tracking-[0.16em] text-orange-100 shadow-[0_0_24px_rgba(249,115,22,0.12)] backdrop-blur">
+            {position.label}
+          </div>
+        </motion.div>
       ) : null}
     </AnimatePresence>
   );
