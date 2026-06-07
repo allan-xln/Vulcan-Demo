@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  background: #070707;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255, 107, 22, 0.13), transparent 26rem),
+    radial-gradient(circle at 86% 18%, rgba(255, 176, 32, 0.08), transparent 24rem),
+    linear-gradient(180deg, #070707 0%, #0b0b0d 52%, #070707 100%);
+  color: #fafafa;
+}
+
+::selection {
+  background: rgba(255, 107, 22, 0.45);
+}
+
+.vulcan-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.focus-ring {
+  position: relative;
+}
+
+.focus-ring::after {
+  border: 1px solid rgba(255, 176, 32, 0.72);
+  box-shadow: 0 0 0 1px rgba(255, 107, 22, 0.2), 0 0 34px rgba(255, 107, 22, 0.28);
+  content: "";
+  inset: -5px;
+  pointer-events: none;
+  position: absolute;
+  z-index: 20;
+}
