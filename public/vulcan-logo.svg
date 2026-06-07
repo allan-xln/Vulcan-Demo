@@ -1,15 +1,11 @@
-<svg width="420" height="180" viewBox="0 0 420 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="184" height="184" viewBox="0 0 184 184" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="vx-mark" x1="43" y1="27" x2="147" y2="151" gradientUnits="userSpaceOnUse">
+    <linearGradient id="vx-mark" x1="43" y1="24" x2="147" y2="148" gradientUnits="userSpaceOnUse">
       <stop stop-color="#FFB15E"/>
       <stop offset="0.46" stop-color="#FF7A1A"/>
       <stop offset="1" stop-color="#D6026C"/>
     </linearGradient>
-    <linearGradient id="vx-text" x1="177" y1="53" x2="340" y2="124" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#FFFFFF"/>
-      <stop offset="1" stop-color="#F3C59B"/>
-    </linearGradient>
-    <filter id="vx-glow" x="-18" y="-18" width="190" height="210" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <filter id="vx-glow" x="-18" y="-18" width="220" height="220" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
       <feFlood flood-opacity="0" result="BackgroundImageFix"/>
       <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
       <feColorMatrix in="blur" type="matrix" values="0 0 0 0 1 0 0 0 0 0.48 0 0 0 0 0.102 0 0 0 0.45 0"/>
@@ -18,16 +14,13 @@
   </defs>
 
   <g filter="url(#vx-glow)">
-    <path d="M92 22L153 58V122L92 158L31 122V58L92 22Z" fill="url(#vx-mark)"/>
-    <path d="M92 42L133 66V113L92 137L51 113V66L92 42Z" fill="#050507" fill-opacity="0.92"/>
-    <path d="M62 62L87 121H101L126 62H109L94 101L79 62H62Z" fill="white"/>
-    <path d="M62 62L87 121H101L126 62" stroke="#FF7A1A" stroke-opacity="0.55" stroke-width="2"/>
-    <path d="M47 89H25" stroke="#FF7A1A" stroke-width="5" stroke-linecap="round"/>
-    <path d="M159 89H137" stroke="#D6026C" stroke-width="5" stroke-linecap="round"/>
-    <circle cx="92" cy="22" r="4" fill="#FFB15E"/>
-    <circle cx="92" cy="158" r="4" fill="#D6026C"/>
+    <path d="M92 20L153 56V120L92 156L31 120V56L92 20Z" fill="url(#vx-mark)"/>
+    <path d="M92 40L133 64V111L92 135L51 111V64L92 40Z" fill="#050507" fill-opacity="0.92"/>
+    <path d="M62 60L87 119H101L126 60H109L94 99L79 60H62Z" fill="white"/>
+    <path d="M62 60L87 119H101L126 60" stroke="#FF7A1A" stroke-opacity="0.55" stroke-width="2"/>
+    <path d="M47 87H25" stroke="#FF7A1A" stroke-width="5" stroke-linecap="round"/>
+    <path d="M159 87H137" stroke="#D6026C" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="92" cy="20" r="4" fill="#FFB15E"/>
+    <circle cx="92" cy="156" r="4" fill="#D6026C"/>
   </g>
-
-  <text x="178" y="86" fill="url(#vx-text)" font-family="Space Grotesk, Inter, Arial, sans-serif" font-size="46" font-weight="800" letter-spacing="-1.8">Vulcan</text>
-  <text x="181" y="116" fill="#FF9A3C" fill-opacity="0.86" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600" letter-spacing="3.4">OPERATION ENGINE</text>
 </svg>
