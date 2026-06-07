@@ -4,13 +4,14 @@ import {
   Bot,
   Brain,
   Building2,
+  Command,
   Gauge,
   Laptop,
   Lock,
   MessageCircle,
   Network,
+  Play,
   ShieldCheck,
-  Sparkles,
   Zap
 } from "lucide-react";
 
@@ -28,17 +29,17 @@ export const metrics = [
 export const tourSteps = [
   {
     id: "welcome",
-    target: "hero",
+    target: "command-button",
     title: "Bem-vindo ao Vulcan",
-    body: "Esta demo mostra como o Vulcan transforma sinais operacionais em decisões claras para gestores.",
-    icon: Sparkles
+    body: "Este botão abre a camada de comando. É por aqui que o usuário troca de tela sem uma navbar tradicional.",
+    icon: Command
   },
   {
-    id: "realtime",
-    target: "tempo-real",
-    title: "Tempo real",
-    body: "Aqui você vê agentes sincronizando, eventos chegando e a última atualização da operação.",
-    icon: Activity
+    id: "command-center",
+    target: "command-center",
+    title: "Topo operacional",
+    body: "O topo mostra tempo real, agentes online, isolamento da empresa, status da base e usuário da sessão demo.",
+    icon: Gauge
   },
   {
     id: "agents",
@@ -105,9 +106,9 @@ export const tourSteps = [
   },
   {
     id: "summary",
-    target: "cta",
+    target: "command-button",
     title: "Resumo final",
-    body: "Em poucos minutos, um cliente entende agentes, métricas, IA, permissões, notificações e valor financeiro.",
+    body: "Pronto. O cliente viu como navegar, onde ficam as métricas e como o Vulcan explica a operação inteira.",
     icon: Lock
   }
 ];
@@ -182,7 +183,7 @@ export const pages = [
     title: "Tour Guiado",
     eyebrow: "onboarding premium",
     description: "Um tutorial passo a passo mostra cada parte do produto para clientes e decisores.",
-    icon: Sparkles
+    icon: Play
   },
   {
     slug: "metricas",

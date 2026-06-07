@@ -19,10 +19,10 @@ O cliente deve sair da experiência entendendo que o Vulcan:
 ## Jornada Recomendada
 
 1. Abra a home da demo.
-2. Clique em `Iniciar tour guiado`.
-3. Avance passo a passo.
+2. Clique em `Entrar na central`.
+3. Avance o tour dentro do portal, começando pelo botão `Comando`.
 4. Pare nos pontos que o cliente demonstrar interesse.
-5. Ao final, clique em `Agendar conversa` ou chame pelo WhatsApp.
+5. Ao final, abra a camada de comando para mostrar as telas disponíveis.
 
 ## Passos Do Tour
 
@@ -85,4 +85,3 @@ Edite `data/demo.ts`:
 - Não conectar ao backend real do Vulcan.
 - Não prometer coleta invasiva.
 - Reforçar que a coleta é por política, consentimento e transparência.
-

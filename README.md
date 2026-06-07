@@ -92,7 +92,8 @@ Cada passo possui:
 O `target` controla qual área da tela recebe highlight. Exemplos:
 
 ```text
-hero
+command-button
+command-center
 tempo-real
 agentes
 metricas
@@ -144,4 +145,3 @@ Ele não deve:
 - conter OpenAI key;
 - conter credenciais Supabase;
 - conter dados reais de clientes.
-
