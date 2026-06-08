@@ -48,3 +48,281 @@ body {
   position: absolute;
   z-index: 20;
 }
+
+@media (max-width: 720px) {
+  body {
+    background:
+      radial-gradient(circle at 24% 4%, rgba(255, 107, 22, 0.12), transparent 18rem),
+      linear-gradient(180deg, #070707 0%, #0b0b0d 58%, #070707 100%);
+  }
+
+  .focus-ring::after {
+    inset: -3px;
+    box-shadow: 0 0 0 1px rgba(255, 107, 22, 0.16), 0 0 18px rgba(255, 107, 22, 0.18);
+  }
+
+  .demo-login-screen,
+  .demo-login-screen > *,
+  .demo-login-layout > *,
+  .demo-login-title-row,
+  .demo-login-form,
+  .demo-login-stat-card,
+  .demo-portal,
+  .demo-shell,
+  .demo-header,
+  .demo-metric-tile,
+  .demo-panel,
+  .demo-command-menu,
+  .demo-command-card,
+  .demo-tour-bubble {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .demo-login-screen {
+    min-height: 100svh;
+    align-items: start;
+    padding: 1rem;
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+
+  .demo-login-layout {
+    gap: 1.05rem;
+    align-items: start;
+  }
+
+  .demo-login-title-row {
+    margin-bottom: 1rem;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+
+  .demo-login-title-row .demo-brand-mark {
+    width: 56px !important;
+    height: 56px !important;
+  }
+
+  .demo-login-title-row p {
+    font-size: 0.7rem;
+    letter-spacing: 0.28em;
+  }
+
+  .demo-login-title {
+    max-width: 18rem;
+    font-size: clamp(2.2rem, 12vw, 3.25rem);
+    line-height: 0.98;
+  }
+
+  .demo-login-copy {
+    max-width: 22rem;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .demo-login-stats {
+    margin-top: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .demo-login-stat-card {
+    min-height: 5.4rem;
+    padding: 0.72rem;
+  }
+
+  .demo-login-stat-card p:first-child {
+    font-size: clamp(1.15rem, 6vw, 1.65rem);
+  }
+
+  .demo-login-stat-card p:last-child {
+    margin-top: 0.35rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    line-height: 1.25;
+  }
+
+  .demo-login-form {
+    overflow: hidden;
+    padding: 1rem;
+  }
+
+  .demo-login-form h2 {
+    font-size: 1.65rem;
+  }
+
+  .demo-login-form input {
+    height: 3.25rem;
+    padding-inline: 0.9rem;
+  }
+
+  .demo-login-tip {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    transform: none !important;
+    margin-bottom: 0.8rem;
+    padding: 0.82rem;
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+
+  .demo-login-tip span {
+    display: none;
+  }
+
+  .demo-portal {
+    padding: 0.75rem;
+    padding-bottom: 12rem;
+  }
+
+  .demo-shell {
+    min-height: auto;
+  }
+
+  .demo-header {
+    gap: 0.9rem;
+    padding: 0.9rem;
+  }
+
+  .demo-header-main {
+    gap: 0;
+  }
+
+  .demo-header-main p {
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+  }
+
+  .demo-header-main h2 {
+    font-size: clamp(1.85rem, 9.8vw, 3rem);
+    line-height: 0.98;
+  }
+
+  .demo-header-main .inline-flex {
+    width: 100%;
+    align-items: flex-start;
+    gap: 0.45rem;
+    white-space: normal;
+  }
+
+  .demo-header-main .text-emerald-200\/70 {
+    display: block;
+    line-height: 1.35;
+  }
+
+  .demo-header-actions {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    width: 100%;
+    gap: 0.6rem;
+  }
+
+  .demo-header-actions > div {
+    display: none;
+  }
+
+  .demo-header-actions button {
+    min-width: 0;
+  }
+
+  #command-button {
+    justify-content: center;
+    width: 100%;
+    height: 3rem;
+  }
+
+  .demo-metric-tile,
+  .demo-panel,
+  .demo-command-card {
+    padding: 1rem;
+  }
+
+  .demo-metric-tile p:nth-child(2) {
+    font-size: 2rem;
+  }
+
+  .demo-panel {
+    overflow: hidden;
+  }
+
+  .demo-panel h3 {
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+
+  .demo-panel .text-3xl {
+    font-size: 1.65rem;
+    line-height: 1.12;
+  }
+
+  .demo-hierarchy-row {
+    margin-left: 0 !important;
+  }
+
+  .demo-command-overlay {
+    padding: 0.75rem;
+  }
+
+  .demo-command-menu {
+    max-height: calc(100svh - 1.5rem);
+    padding: 1rem;
+  }
+
+  .demo-command-menu .demo-brand-mark {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .demo-command-menu h3 {
+    font-size: 1.55rem;
+  }
+
+  .demo-command-grid {
+    auto-rows: minmax(8.25rem, auto);
+  }
+
+  .demo-command-card {
+    min-height: 8.25rem;
+  }
+
+  .demo-command-card div {
+    margin-bottom: 1rem;
+  }
+
+  .demo-command-card p:first-of-type {
+    font-size: 1.1rem;
+  }
+
+  .demo-tour-bubble {
+    left: 0.75rem !important;
+    right: 0.75rem !important;
+    bottom: 0.75rem !important;
+    top: auto !important;
+    width: auto !important;
+    max-height: min(46svh, 22rem);
+    overflow-y: auto;
+    padding: 1rem;
+  }
+
+  .demo-tour-bubble > span:first-child {
+    display: none;
+  }
+
+  .demo-tour-bubble h3 {
+    font-size: 1.05rem;
+  }
+
+  .demo-tour-bubble p {
+    line-height: 1.55;
+  }
+
+  .demo-tour-bubble button {
+    min-height: 2.5rem;
+  }
+
+  .demo-autopilot-cursor {
+    display: none;
+  }
+}

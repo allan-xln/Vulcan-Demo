@@ -157,8 +157,8 @@ export default function Home() {
         {!loggedIn ? (
           <LoginExperience key="login" onLogin={handleLogin} />
         ) : (
-          <motion.section key="portal" className="relative z-10 min-h-screen px-4 py-4 md:px-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <div className="mx-auto min-h-[calc(100vh-2rem)] w-full max-w-[1920px]">
+          <motion.section key="portal" className="demo-portal relative z-10 min-h-screen px-4 py-4 md:px-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <div className="demo-shell mx-auto min-h-[calc(100vh-2rem)] w-full max-w-[1920px]">
               <Header
                 activeView={activeView}
                 currentCommand={currentCommand}
@@ -214,20 +214,19 @@ export default function Home() {
 
 function LoginExperience({ onLogin }: { onLogin: (event: FormEvent<HTMLFormElement>) => void }) {
   return (
-    <motion.section className="relative z-10 grid min-h-screen place-items-center px-6 py-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <div className="grid w-full max-w-6xl items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+    <motion.section className="demo-login-screen relative z-10 grid min-h-screen place-items-center px-6 py-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <div className="demo-login-layout grid w-full max-w-6xl items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
         <motion.div initial={{ x: -70, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
-          <div className="mb-8 flex items-center gap-4">
+          <div className="demo-login-title-row mb-8 flex items-center gap-4">
             <BrandMark size={76} />
             <div>
-              <p className="text-sm uppercase tracking-[0.48em] text-orange-300">Vulcan</p>
-              <h1 className="text-5xl font-semibold tracking-tight md:text-7xl">Central de inteligência operacional</h1>
+              <h1 className="demo-login-title text-5xl font-semibold tracking-tight md:text-7xl">Central de inteligência operacional</h1>
             </div>
           </div>
-          <p className="max-w-2xl text-xl leading-9 text-zinc-300">
+          <p className="demo-login-copy max-w-2xl text-xl leading-9 text-zinc-300">
             Transformando operações em inteligência com agentes, métricas, hierarquia, IA e notificações executivas.
           </p>
-          <div className="mt-10 grid max-w-2xl gap-4 sm:grid-cols-3">
+          <div className="demo-login-stats mt-10 grid max-w-2xl gap-4 sm:grid-cols-3">
             {[
               ["12.840", "eventos hoje"],
               ["27", "gargalos detectados"],
@@ -235,7 +234,7 @@ function LoginExperience({ onLogin }: { onLogin: (event: FormEvent<HTMLFormEleme
             ].map(([value, label], index) => (
               <motion.div
                 key={label}
-                className="border border-orange-400/20 bg-zinc-950/70 p-5 shadow-[0_0_24px_rgba(249,115,22,0.08)] backdrop-blur"
+                className="demo-login-stat-card border border-orange-400/20 bg-zinc-950/70 p-5 shadow-[0_0_24px_rgba(249,115,22,0.08)] backdrop-blur"
                 initial={{ y: 35, opacity: 0 }}
                 animate={{ y: [0, -5, 0], opacity: 1 }}
                 transition={{ delay: 0.2 + index * 0.12, duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
@@ -249,7 +248,7 @@ function LoginExperience({ onLogin }: { onLogin: (event: FormEvent<HTMLFormEleme
 
         <motion.form
           onSubmit={onLogin}
-          className="relative overflow-visible border border-orange-400/20 bg-zinc-950/85 p-8 shadow-[0_0_42px_rgba(249,115,22,0.10)] backdrop-blur-md"
+          className="demo-login-form relative overflow-visible border border-orange-400/20 bg-zinc-950/85 p-8 shadow-[0_0_42px_rgba(249,115,22,0.10)] backdrop-blur-md"
           initial={{ x: 70, opacity: 0, scale: 0.96 }}
           animate={{ x: 0, opacity: 1, scale: 1 }}
           transition={{ duration: 0.75, delay: 0.15 }}
@@ -281,7 +280,7 @@ function LoginExperience({ onLogin }: { onLogin: (event: FormEvent<HTMLFormEleme
             </div>
             <div className="relative mt-8">
               <motion.div
-                className="absolute -top-20 left-1/2 z-20 w-72 -translate-x-1/2 border border-orange-400/40 bg-black px-4 py-3 text-sm text-orange-100 shadow-[0_0_26px_rgba(249,115,22,0.16)]"
+                className="demo-login-tip absolute -top-20 left-1/2 z-20 w-72 -translate-x-1/2 border border-orange-400/40 bg-black px-4 py-3 text-sm text-orange-100 shadow-[0_0_26px_rgba(249,115,22,0.16)]"
                 animate={{ y: [0, -5, 0] }}
                 transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
               >
@@ -322,12 +321,12 @@ function Header({
   return (
     <motion.header
       id="command-center"
-      className={cn("relative mb-4 grid gap-4 overflow-visible border border-zinc-800 bg-zinc-950/65 p-4 backdrop-blur-xl lg:grid-cols-[1fr_auto]", activeTarget === "command-center" && "focus-ring")}
+      className={cn("demo-header relative mb-4 grid gap-4 overflow-visible border border-zinc-800 bg-zinc-950/65 p-4 backdrop-blur-xl lg:grid-cols-[1fr_auto]", activeTarget === "command-center" && "focus-ring")}
       initial={{ y: -18, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
     >
       <ScanLine />
-      <div className="flex min-w-0 gap-4">
+      <div className="demo-header-main flex min-w-0 gap-4">
         <div className="hidden h-16 w-16 shrink-0 place-items-center border border-orange-400/25 bg-black/60 md:grid">
           <BrandMark size={42} />
         </div>
@@ -340,7 +339,7 @@ function Header({
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap items-start justify-start gap-3 lg:justify-end">
+      <div className="demo-header-actions flex flex-wrap items-start justify-start gap-3 lg:justify-end">
         <motion.button
           id="command-button"
           type="button"
@@ -464,7 +463,7 @@ function HierarchyView({ activeTarget }: { activeTarget: string }) {
           {hierarchy.map((item, index) => (
             <motion.div
               key={item.role}
-              className="border border-zinc-800 bg-black/45 p-4"
+              className="demo-hierarchy-row border border-zinc-800 bg-black/45 p-4"
               style={{ marginLeft: `${Math.min(index, 5) * 22}px` }}
               initial={{ x: -18, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -638,10 +637,10 @@ function CommandOverlay({
   return (
     <AnimatePresence>
       {open ? (
-        <motion.div className="fixed inset-0 z-50 bg-black/78 p-4 backdrop-blur-xl md:p-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+        <motion.div className="demo-command-overlay fixed inset-0 z-50 bg-black/78 p-4 backdrop-blur-xl md:p-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
           <motion.div
             id="command-menu"
-            className={cn("mx-auto flex h-full max-w-6xl flex-col border border-orange-400/20 bg-zinc-950/88 p-4 shadow-[0_0_48px_rgba(249,115,22,0.10)] md:p-6", activeTarget === "command-menu" && "focus-ring")}
+            className={cn("demo-command-menu mx-auto flex h-full max-w-6xl flex-col border border-orange-400/20 bg-zinc-950/88 p-4 shadow-[0_0_48px_rgba(249,115,22,0.10)] md:p-6", activeTarget === "command-menu" && "focus-ring")}
             initial={{ scale: 0.96, y: 20, filter: "blur(10px)" }}
             animate={{ scale: 1, y: 0, filter: "blur(0px)" }}
             exit={{ scale: 0.98, y: 18, filter: "blur(8px)" }}
@@ -658,7 +657,7 @@ function CommandOverlay({
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <div className="grid flex-1 auto-rows-fr gap-3 overflow-y-auto md:grid-cols-2 xl:grid-cols-3">
+            <div className="demo-command-grid grid flex-1 auto-rows-fr gap-3 overflow-y-auto md:grid-cols-2 xl:grid-cols-3">
               {commands.map((command, index) => {
                 const Icon = command.icon;
                 const active = activeView === command.key;
@@ -669,7 +668,7 @@ function CommandOverlay({
                     type="button"
                     onClick={() => setView(command.key)}
                     className={cn(
-                      "group relative min-h-40 overflow-hidden border p-5 text-left transition",
+                      "demo-command-card group relative min-h-40 overflow-hidden border p-5 text-left transition",
                       active ? "border-orange-300 bg-orange-500 text-black" : "border-zinc-800 bg-black/48 text-zinc-100 hover:border-orange-400/60",
                       activeTarget === `command-${command.key}` && "focus-ring"
                     )}
@@ -726,7 +725,7 @@ function TourBubble({
     <AnimatePresence>
       {active ? (
         <motion.aside
-          className={cn("fixed z-40 w-[min(390px,calc(100vw-2rem))] border border-orange-400/35 bg-black/92 p-5 shadow-[0_0_34px_rgba(249,115,22,0.20)] backdrop-blur-xl", placementClass)}
+          className={cn("demo-tour-bubble fixed z-40 w-[min(390px,calc(100vw-2rem))] border border-orange-400/35 bg-black/92 p-5 shadow-[0_0_34px_rgba(249,115,22,0.20)] backdrop-blur-xl", placementClass)}
           initial={{ opacity: 0, y: -18, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -14, scale: 0.98 }}
@@ -780,7 +779,7 @@ function AutopilotCursor({ active, position }: { active: boolean; position: Curs
     <AnimatePresence>
       {active && position.visible ? (
         <motion.div
-          className="pointer-events-none fixed left-0 top-0 z-[70] flex items-center gap-2"
+          className="demo-autopilot-cursor pointer-events-none fixed left-0 top-0 z-[70] flex items-center gap-2"
           initial={{ opacity: 0, scale: 0.86 }}
           animate={{ opacity: 1, scale: 1, x: position.x, y: position.y }}
           exit={{ opacity: 0, scale: 0.88 }}
@@ -800,7 +799,7 @@ function AutopilotCursor({ active, position }: { active: boolean; position: Curs
 
 function MetricTile({ metric, index }: { metric: (typeof metrics)[number]; index: number }) {
   return (
-    <motion.div className="relative overflow-hidden border border-orange-400/15 bg-zinc-950/70 p-5 shadow-[0_0_26px_rgba(249,115,22,0.05)]" initial={{ y: 28, opacity: 0 }} animate={{ y: [0, -2, 0], opacity: 1 }} transition={{ delay: index * 0.07 }}>
+    <motion.div className="demo-metric-tile relative overflow-hidden border border-orange-400/15 bg-zinc-950/70 p-5 shadow-[0_0_26px_rgba(249,115,22,0.05)]" initial={{ y: 28, opacity: 0 }} animate={{ y: [0, -2, 0], opacity: 1 }} transition={{ delay: index * 0.07 }}>
       <ScanLine />
       <div className="relative z-10">
         <p className="text-sm text-zinc-500">{metric.label}</p>
@@ -813,7 +812,7 @@ function MetricTile({ metric, index }: { metric: (typeof metrics)[number]; index
 
 function Panel({ id, active, title, icon: Icon, children }: { id: string; active: boolean; title: string; icon: typeof Gauge; children: ReactNode }) {
   return (
-    <motion.section id={id} className={cn("relative overflow-visible border border-zinc-800 bg-zinc-950/78 p-5 shadow-[0_0_36px_rgba(0,0,0,0.22)] backdrop-blur-md", active && "focus-ring")} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+    <motion.section id={id} className={cn("demo-panel relative overflow-visible border border-zinc-800 bg-zinc-950/78 p-5 shadow-[0_0_36px_rgba(0,0,0,0.22)] backdrop-blur-md", active && "focus-ring")} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
       <ScanLine />
       <div className="relative z-10 mb-5 flex items-center gap-3">
         <div className="grid h-10 w-10 place-items-center bg-orange-500 text-black">
@@ -873,7 +872,7 @@ function StatusPill({ icon: Icon, label }: { icon: typeof Gauge; label: string }
 
 function BrandMark({ size, className = "" }: { size: number; className?: string }) {
   return (
-    <motion.div className={cn("relative grid shrink-0 place-items-center", className)} style={{ width: size, height: size }} animate={{ filter: ["drop-shadow(0 0 6px rgba(249,115,22,0.18))", "drop-shadow(0 0 14px rgba(249,115,22,0.30))", "drop-shadow(0 0 6px rgba(249,115,22,0.18))"] }} transition={{ duration: 2.7, repeat: Infinity, ease: "easeInOut" }}>
+    <motion.div className={cn("demo-brand-mark relative grid shrink-0 place-items-center", className)} style={{ width: size, height: size }} animate={{ filter: ["drop-shadow(0 0 6px rgba(249,115,22,0.18))", "drop-shadow(0 0 14px rgba(249,115,22,0.30))", "drop-shadow(0 0 6px rgba(249,115,22,0.18))"] }} transition={{ duration: 2.7, repeat: Infinity, ease: "easeInOut" }}>
       <motion.div className="absolute inset-0 border border-orange-300/35" animate={{ rotate: [0, 90, 180, 270, 360], scale: [1, 1.08, 1] }} transition={{ duration: 6, repeat: Infinity, ease: "linear" }} />
       <motion.div className="absolute inset-1 border border-orange-500/25" animate={{ rotate: [360, 270, 180, 90, 0], opacity: [0.25, 0.75, 0.25] }} transition={{ duration: 5, repeat: Infinity, ease: "linear" }} />
       <Image src="/vulcan-logo.svg" alt="Vulcan" width={size} height={size} className="relative z-10 h-full w-full object-contain" />
