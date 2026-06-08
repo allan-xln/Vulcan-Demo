@@ -11,10 +11,10 @@ export function StoryPage({ slug }: { slug: string }) {
   const ctaHref = `https://wa.me/${contactWhatsApp}?text=${encodeURIComponent(`Quero falar sobre ${page.title} no Vulcan.`)}`;
 
   return (
-    <main className="min-h-screen bg-vulcan-ink text-zinc-100">
+    <main className="demo-story-page min-h-screen bg-vulcan-ink text-zinc-100">
       <div className="vulcan-grid fixed inset-0 opacity-25" />
-      <section className="relative z-10 mx-auto min-h-screen max-w-6xl px-5 py-6">
-        <header className="mb-8 flex flex-wrap items-center justify-between gap-4 border border-orange-400/15 bg-black/55 p-4">
+      <section className="demo-story-shell relative z-10 mx-auto min-h-screen max-w-6xl px-5 py-6">
+        <header className="demo-story-header mb-8 flex flex-wrap items-center justify-between gap-4 border border-orange-400/15 bg-black/55 p-4">
           <Link href="/" className="flex items-center gap-3 text-zinc-200 transition hover:text-orange-200">
             <ArrowLeft className="h-4 w-4" />
             Voltar para a demo
@@ -22,17 +22,17 @@ export function StoryPage({ slug }: { slug: string }) {
           <Image src="/vulcan-logo.svg" alt="Vulcan" width={46} height={46} />
         </header>
 
-        <article className="overflow-hidden border border-zinc-800 bg-zinc-950/78">
-          <div className="border-b border-orange-400/15 bg-orange-950/10 p-6 md:p-10">
-            <div className="mb-6 inline-flex items-center gap-3 border border-orange-400/20 bg-black/35 px-4 py-2 text-sm text-orange-100">
+        <article className="demo-story-card overflow-hidden border border-zinc-800 bg-zinc-950/78">
+          <div className="demo-story-hero border-b border-orange-400/15 bg-orange-950/10 p-6 md:p-10">
+            <div className="demo-story-eyebrow mb-6 inline-flex items-center gap-3 border border-orange-400/20 bg-black/35 px-4 py-2 text-sm text-orange-100">
               <Icon className="h-4 w-4" />
               {page.eyebrow}
             </div>
-            <h1 className="max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">{page.title}</h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-zinc-300">{page.description}</p>
+            <h1 className="demo-story-title max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">{page.title}</h1>
+            <p className="demo-story-description mt-6 max-w-3xl text-lg leading-8 text-zinc-300">{page.description}</p>
           </div>
 
-          <div className="grid gap-5 p-6 md:grid-cols-3 md:p-10">
+          <div className="demo-story-grid grid gap-5 p-6 md:grid-cols-3 md:p-10">
             {[
               ["O que o cliente entende", "Valor do Vulcan em linguagem simples, sem termos técnicos desnecessários."],
               ["Como demonstrar", "Use esta página como apoio rápido depois do tour interativo principal."],
@@ -45,7 +45,7 @@ export function StoryPage({ slug }: { slug: string }) {
             ))}
           </div>
 
-          <div className="border-t border-zinc-800 p-6 md:p-10">
+          <div className="demo-story-points border-t border-zinc-800 p-6 md:p-10">
             <h2 className="text-2xl font-semibold">Pontos para apresentar</h2>
             <div className="mt-5 grid gap-3">
               {(relatedSteps.length ? relatedSteps : tourSteps.slice(0, 4)).map((step) => (
@@ -58,7 +58,7 @@ export function StoryPage({ slug }: { slug: string }) {
           </div>
         </article>
 
-        <div className="mt-6 flex flex-wrap gap-3">
+        <div className="demo-story-actions mt-6 flex flex-wrap gap-3">
           <Link href="/" className="inline-flex h-12 items-center justify-center border border-zinc-800 px-5 text-zinc-200 transition hover:border-orange-400/50 hover:text-orange-200">
             Reiniciar demo
           </Link>

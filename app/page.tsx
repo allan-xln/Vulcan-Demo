@@ -731,7 +731,7 @@ function TourBubble({
           exit={{ opacity: 0, y: -14, scale: 0.98 }}
         >
           <span className={cn("absolute -top-2 h-4 w-4 rotate-45 border-l border-t border-orange-400/35 bg-black", arrowClass)} />
-          <div className="flex items-start gap-3">
+          <div className="demo-tour-header flex items-start gap-3">
             <div className="grid h-11 w-11 shrink-0 place-items-center bg-orange-500 text-black">
               <Icon className="h-5 w-5" />
             </div>
@@ -741,14 +741,14 @@ function TourBubble({
             </div>
           </div>
           <p className="mt-4 text-sm leading-7 text-zinc-300">{step.body}</p>
-          <div className="mt-4 flex items-center gap-2 border border-emerald-400/20 bg-emerald-950/20 px-3 py-2 text-xs text-emerald-100">
+          <div className="demo-tour-status mt-4 flex items-center gap-2 border border-emerald-400/20 bg-emerald-950/20 px-3 py-2 text-xs text-emerald-100">
             <motion.span className="h-2 w-2 rounded-full bg-emerald-400" animate={{ opacity: [0.45, 1, 0.45], scale: [0.9, 1.14, 0.9] }} transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }} />
             {autoPilot ? "Autopiloto guiando a demo agora" : "Autopiloto pausado para apresentação manual"}
           </div>
           <div className="mt-4 h-2 bg-zinc-900">
             <motion.div className="h-full bg-gradient-to-r from-orange-700 via-orange-400 to-yellow-300" animate={{ width: `${progress}%` }} />
           </div>
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="demo-tour-actions mt-5 flex flex-wrap gap-2">
             <button type="button" onClick={onToggleAutoPilot} className="inline-flex h-10 items-center gap-2 border border-orange-400/35 px-3 text-sm text-orange-100 transition hover:bg-orange-500 hover:text-black">
               {autoPilot ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
               {autoPilot ? "Pausar" : "Retomar"}
@@ -853,7 +853,7 @@ function BarRow({ label, value }: { label: string; value: number }) {
 
 function LiveBadge({ label, detail }: { label: string; detail: string }) {
   return (
-    <div className="inline-flex items-center gap-3 border border-emerald-400/20 bg-emerald-950/20 px-3 py-2 text-xs text-emerald-100">
+    <div className="demo-live-badge inline-flex items-center gap-3 border border-emerald-400/20 bg-emerald-950/20 px-3 py-2 text-xs text-emerald-100">
       <motion.span className="h-2 w-2 rounded-full bg-emerald-400" animate={{ opacity: [0.45, 1, 0.45], scale: [0.9, 1.12, 0.9] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }} />
       <span className="font-medium">{label}</span>
       <span className="text-emerald-200/70">{detail}</span>
